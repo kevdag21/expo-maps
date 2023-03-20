@@ -1,11 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { MapScreen } from './components/Map';
+import { SearchLocation } from './context/searchLocationContext';
 
 export default function App() {
-  
   return (
-    <MapScreen></MapScreen>
+    <SearchLocation>
+      <MapScreen/>
+    </SearchLocation>
+    
   );
 }
 
