@@ -5,12 +5,14 @@ import GooglePlacesInput from "./Search";
 import useCurrentLocation from "../hooks/useCurrentLocation";
 import  searchLocationContext  from "../context/searchLocationContext";
 import MapViewDirections from "react-native-maps-directions";
+import * as geolib from 'geolib';
 
 
 export function MapScreen() {
   const currentLocation = useCurrentLocation();
   const {searchLocation} = useContext(searchLocationContext);
 
+//Dibuja el marcador en la locación de destino
   const renderMarkerSearchLocation = (searchLocation) => {
     if (searchLocation) {
       return (
@@ -27,6 +29,7 @@ export function MapScreen() {
     }
   };
 
+  //Dibuja la linea entre el punto de origen y el de destino
   const renderPolyline = (searchLocation) =>{
     if (searchLocation){
       return (
@@ -42,10 +45,16 @@ export function MapScreen() {
           apikey={"AIzaSyBNLEE0e6JiPHJh88NuSvdOLBggmS43Mv0"}
           strokeWidth={3}
           strokeColor="hotpink"
+          
+          onReady={(result) => {
+            console.log(`Distance: ${result.distance} km`);
+            console.log(`Duration: ${result.duration} min.`);
+          }}
         />
       );
     }
   }
+
 
   return (
     <View style={styles.container}>
