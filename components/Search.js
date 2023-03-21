@@ -4,11 +4,11 @@ import {
   GooglePlaceDetail,
 } from "react-native-google-places-autocomplete";
 import getSearchLocation from "../apiResponses/GetSearchLocation";
-import useCurrentPosition from "../hooks/useCurrentPosition";
+import useCurrentLocation from "../hooks/useCurrentLocation";
 import searchLocationContext from "../context/searchLocationContext";
 
 export default function GooglePlacesInput() {
-  const loc = useCurrentPosition();
+  const currentLocation = useCurrentLocation();
   const {setSearchLocation} = useContext(searchLocationContext)
 
   const handleOnPress = (result) => {
@@ -30,7 +30,7 @@ export default function GooglePlacesInput() {
           language: "es",
           components: "country:mx",
           radius: 5000,
-          location: `${loc.coords.latitude}, ${loc.coords.longitude}`,
+          location: `${currentLocation.coords.latitude}, ${currentLocation.coords.longitude}`,
           strictbounds: true,
         }}
         styles={{

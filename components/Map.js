@@ -2,14 +2,16 @@ import React, { useContext } from "react";
 import { StyleSheet, View, Dimensions, Button } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import GooglePlacesInput from "./Search";
-import useCurrentPosition from "../hooks/useCurrentPosition";
+import useCurrentLocation from "../hooks/useCurrentLocation";
 import  searchLocationContext  from "../context/searchLocationContext";
+import MapViewDirections from "react-native-maps-directions";
+
 
 export function MapScreen() {
-  const location = useCurrentPosition();
+  const currentLocation = useCurrentLocation();
   const {searchLocation} = useContext(searchLocationContext);
 
-  const renderSearchLocation = (searchLocation) => {
+  const renderMarkerSearchLocation = (searchLocation) => {
     if (searchLocation) {
       return (
         <Marker
@@ -24,37 +26,59 @@ export function MapScreen() {
       );
     }
   };
+
+  const renderPolyline = (searchLocation) =>{
+    if (searchLocation){
+      return (
+        <MapViewDirections
+          origin={{
+            latitude: currentLocation.coords.latitude,
+            longitude: currentLocation.coords.longitude,
+          }}
+          destination={{
+            latitude: searchLocation.lat,
+            longitude: searchLocation.lng,
+          }}
+          apikey={"AIzaSyBNLEE0e6JiPHJh88NuSvdOLBggmS43Mv0"}
+          strokeWidth={3}
+          strokeColor="hotpink"
+        />
+      );
+    }
+  }
+
   return (
     <View style={styles.container}>
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          style={styles.mapStyle}
-          initialRegion={{
-            latitude: 18,
-            longitude: -94,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
+      <MapView
+        provider={PROVIDER_GOOGLE}
+        style={styles.mapStyle}
+        initialRegion={{
+          latitude: 18,
+          longitude: -94,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        }}
+        region={{
+          latitude: currentLocation.coords.latitude,
+          longitude: currentLocation.coords.longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        }}
+        mapType="standard"
+      >
+        {renderPolyline(searchLocation)}
+        <Marker
+          draggable={true}
+          coordinate={{
+            latitude: currentLocation.coords.latitude,
+            longitude: currentLocation.coords.longitude,
           }}
-          region={{
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          }}
-          mapType="standard"
-        >
-          <Marker
-            draggable={true}
-            coordinate={{
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-            }}
-            title={"Marcador"}
-            pinColor={"purple"}
-          />
-          {renderSearchLocation(searchLocation)}
-        </MapView>
-        <GooglePlacesInput />
+          title={"Marcador"}
+          pinColor={"purple"}
+        />
+        {renderMarkerSearchLocation(searchLocation)}
+      </MapView>
+      <GooglePlacesInput />
     </View>
   );
 }

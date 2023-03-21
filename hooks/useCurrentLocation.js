@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"; 
 import * as Location from 'expo-location'; 
 
-export default function useCurrentPosition(){
+export default function useCurrentLocation(){
     const [location, setLocation] = useState({coords:{
       latitude: 20, 
       longitude: 20, 
