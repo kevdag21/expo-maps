@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { MapScreen } from './components/Map';
 import { SearchLocation } from './context/searchLocationContext';
 
+
 export default function App() {
   return (
     <SearchLocation>
