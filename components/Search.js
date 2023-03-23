@@ -7,8 +7,7 @@ import getSearchLocation from "../apiResponses/GetSearchLocation";
 import useCurrentLocation from "../hooks/useCurrentLocation";
 import searchLocationContext from "../context/searchLocationContext";
 
-export default function Search() {
-  const currentLocation = useCurrentLocation();
+export default function Search({currentLocation}) {
   const {setSearchLocation} = useContext(searchLocationContext)
 
   const handleOnPress = (result) => {
@@ -16,7 +15,6 @@ export default function Search() {
     getSearchLocation(place_id).then((placeDetail) => {
       const location = placeDetail.result.geometry.location;
       location.name = placeDetail.result.name
-      console.log(location)
       setSearchLocation(location)
     });
   };

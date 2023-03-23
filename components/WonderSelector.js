@@ -9,11 +9,10 @@ export default function WonderSelector({ origin, destination }) {
   return (
     <View style={styles.container}>
       <Ubication 
-        style={styles}
         origin={origin} 
         destination={destination} />
-      {wonderTypesData.map((name={}) => (
-        <WonderType name={name} />
+      {wonderTypesData.map((name={}, index) => (
+        <WonderType key={index} name={name} />
       ))}
     </View>
   );

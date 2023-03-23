@@ -93,7 +93,7 @@ export function MapScreen() {
         />
         {renderMarkerSearchLocation(searchLocation)}
       </MapView>
-      <Search />
+      <Search currentLocation={currentLocation}/>
       {renderWonderSelector(searchLocation)}
     </View>
   );
