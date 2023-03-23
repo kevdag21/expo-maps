@@ -7,37 +7,40 @@ import getSearchLocation from "../apiResponses/GetSearchLocation";
 import useCurrentLocation from "../hooks/useCurrentLocation";
 import searchLocationContext from "../context/searchLocationContext";
 
-export default function GooglePlacesInput() {
+export default function Search() {
   const currentLocation = useCurrentLocation();
   const {setSearchLocation} = useContext(searchLocationContext)
 
   const handleOnPress = (result) => {
     const place_id = result.place_id;
     getSearchLocation(place_id).then((placeDetail) => {
-      setSearchLocation(placeDetail.result.geometry.location)
+      const location = placeDetail.result.geometry.location;
+      location.name = placeDetail.result.name
+      console.log(location)
+      setSearchLocation(location)
     });
   };
 
   return (
     <>
-      <GooglePlacesAutocomplete
-        placeholder="Buscar"
+      <GooglePlacesAutocomplete 
+        placeholder='Buscar'
         onPress={(result) => {
           handleOnPress(result);
         }}
         query={{
-          key: "AIzaSyBNLEE0e6JiPHJh88NuSvdOLBggmS43Mv0",
-          language: "es",
-          components: "country:mx",
+          key: 'AIzaSyBNLEE0e6JiPHJh88NuSvdOLBggmS43Mv0',
+          language: 'es',
+          components: 'country:mx',
           radius: 5000,
           location: `${currentLocation.coords.latitude}, ${currentLocation.coords.longitude}`,
           strictbounds: true,
         }}
         styles={{
           container: {
-            position: "absolute",
-            top: Platform.select({ ios: 60, android: 40 }),
-            width: "100%",
+            position: 'absolute',
+            top: Platform.select({ ios: '10%', android: '10%' }),
+            width: '100%',
           },
         }}
       />
