@@ -19,9 +19,15 @@ export default function useCurrentLocation(){
       }
 
       const loc = await Location.getCurrentPositionAsync()
+      const codeFormatAdress = await Location.reverseGeocodeAsync({
+        latitude: loc.coords.latitude,
+        longitude: loc.coords.longitude,
+      }); 
+      
+      loc.name = codeFormatAdress[0].name;
       setLocation(loc)
     })()
   }, [])
-  
+  console.log(location)
   return location
 };

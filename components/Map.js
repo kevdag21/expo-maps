@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
-import { StyleSheet, View, Dimensions, Button } from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import GooglePlacesInput from "./Search";
+import Search from "./Search";
 import useCurrentLocation from "../hooks/useCurrentLocation";
 import  searchLocationContext  from "../context/searchLocationContext";
 import MapViewDirections from "react-native-maps-directions";
-import * as geolib from 'geolib';
-
+import WonderSelector from "./WonderSelector";
 
 export function MapScreen() {
   const currentLocation = useCurrentLocation();
@@ -16,15 +15,15 @@ export function MapScreen() {
   const renderMarkerSearchLocation = (searchLocation) => {
     if (searchLocation) {
       return (
-        <Marker
-          draggable={false}
-          coordinate={{
-            latitude: searchLocation.lat,
-            longitude: searchLocation.lng,
-          }}
-          title={"Marcador"}
-          pinColor={"red"}
-        />
+          <Marker
+            draggable={false}
+            coordinate={{
+              latitude: searchLocation.lat,
+              longitude: searchLocation.lng,
+            }}
+            title={"Marcador"}
+            pinColor={"red"}
+          />
       );
     }
   };
@@ -33,28 +32,35 @@ export function MapScreen() {
   const renderPolyline = (searchLocation) =>{
     if (searchLocation){
       return (
-        <MapViewDirections
-          origin={{
-            latitude: currentLocation.coords.latitude,
-            longitude: currentLocation.coords.longitude,
-          }}
-          destination={{
-            latitude: searchLocation.lat,
-            longitude: searchLocation.lng,
-          }}
-          apikey={"AIzaSyBNLEE0e6JiPHJh88NuSvdOLBggmS43Mv0"}
-          strokeWidth={3}
-          strokeColor="hotpink"
-          
-          onReady={(result) => {
-            console.log(`Distance: ${result.distance} km`);
-            console.log(`Duration: ${result.duration} min.`);
-          }}
-        />
+          <MapViewDirections
+            origin={{
+              latitude: currentLocation.coords.latitude,
+              longitude: currentLocation.coords.longitude,
+            }}
+            destination={{
+              latitude: searchLocation.lat,
+              longitude: searchLocation.lng,
+            }}
+            apikey={"AIzaSyBNLEE0e6JiPHJh88NuSvdOLBggmS43Mv0"}
+            strokeWidth={3}
+            strokeColor="hotpink"
+            onReady={(result) => {
+              console.log(`Distance: ${result.distance} km`);
+              console.log(`Duration: ${result.duration} min.`);
+            }}
+          />
       );
     }
   }
 
+  const renderWonderSelector = (searchLocation) => {
+    if (searchLocation) {
+      return <WonderSelector 
+        origin={currentLocation.name}
+        destination={searchLocation.name}
+      />;
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -87,15 +93,15 @@ export function MapScreen() {
         />
         {renderMarkerSearchLocation(searchLocation)}
       </MapView>
-      <GooglePlacesInput />
+      <Search />
+      {renderWonderSelector(searchLocation)}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -103,28 +109,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
-  primary: {
-    main: "#FF5A5F",
-    contrastText: "#ffffff",
-  },
-  secondary: {
-    main: "#006c70",
-    contrastText: "#ffffff",
-  },
-  dark: {
-    main: "#000000",
-    contrastText: "#ffffff",
-    lightDark: "#353535",
-    metalblue: "#3E4A63",
-  },
-  grayScale: {
-    gray100: "#FAFAFA",
-    gray200: "#F5F5F5",
-    gray300: "#ECECEC",
-  },
-  button: {
-    position: "absolute",
-    top: Platform.select({ ios: 90, android: 40 }),
-    width: "100%",
-  },
-});
+}) 
+
+
