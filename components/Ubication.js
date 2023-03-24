@@ -18,7 +18,7 @@ export default function Ubication({ origin, destination }) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
-    alignItems: "left",
+    alignItems: "flex-start",
     border: 2,
     borderRadius: 10,
     marginTop: "5%",
